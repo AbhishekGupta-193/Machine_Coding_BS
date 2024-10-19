@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Monitoring File</title>
+    <link rel="stylesheet" href="./style.css" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        function appendLogs(data) {
+            const container = document.getElementById('msg-container');
+            data.forEach(e => {
+                const p = document.createElement('p');
+                p.textContent = e;
+                p.className = 'log';
+                container.appendChild(p);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        socket.on("init", function (data) {
+            appendLogs(data);
+        });
+
+        socket.on("update-log", function (data) {
+            appendLogs(data);
+        });
+    </script>
+</head>
+<body>
+    <h2>Log Watcher</h2>
+    <div id="msg-container"></div>
+</body>
+</html>
